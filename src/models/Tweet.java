@@ -1,28 +1,31 @@
 package models;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class Tweet {
 	
-	private long id_utente;
+	private Utente utente;
+	private String titolo;
 	private String descrizione;
+	private LocalDateTime istanteCaricamento;
 	private List<Utente> likes;
 	
 	
-	public Tweet(long id_utente, String descrizione) {
+	public Tweet(Utente utente, String descrizione) {
 		super();
-		this.id_utente = id_utente;
+		this.utente = utente;
 		this.descrizione = descrizione;
 	}
 
 
-	public long getId_utente() {
-		return id_utente;
+	public Utente getUtente() {
+		return this.utente;
 	}
 
 
-	public void setId_utente(long id_utente) {
-		this.id_utente = id_utente;
+	public void setId_utente(Utente utente) {
+		this.utente = utente;
 	}
 
 
@@ -44,8 +47,31 @@ public class Tweet {
 	public void setLikes(List<Utente> likes) {
 		this.likes = likes;
 	}
-	
-	
+
+
+	public String getTitolo() {
+		return titolo;
+	}
+
+
+	public void setTitolo(String titolo) {
+		this.titolo = titolo;
+	}
+
+
+	public LocalDateTime getIstanteCaricamento() {
+		return istanteCaricamento;
+	}
+
+
+	public void setIstanteCaricamento(LocalDateTime istanteCaricamento) {
+		this.istanteCaricamento = istanteCaricamento;
+	}
+
+
+	public void setUtente(Utente utente) {
+		this.utente = utente;
+	}
 	
 	
 

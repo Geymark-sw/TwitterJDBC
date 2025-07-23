@@ -11,6 +11,7 @@ public class Utente {
 	private String password;
 	private List<Utente> followers;
 	private List<Utente> followed;
+	private List<Tweet> tweets;
 	
 	public Utente(String nome, String cognome, String nickname, String email, String password) {
 		this.nome = nome;
@@ -77,6 +78,14 @@ public class Utente {
 
 	public void setFollowed(List<Utente> followed) {
 		this.followed = followed;
+	}
+
+	public List<Tweet> getTweets() {
+		return tweets;
+	}
+
+	public void setTweets(List<Tweet> tweets) {
+		this.tweets = tweets;
 	}
 	
 	
