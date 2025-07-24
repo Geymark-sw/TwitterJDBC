@@ -1,5 +1,6 @@
 package models;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Utente {
@@ -9,13 +10,14 @@ public class Utente {
 	private String nickname;
 	private String email;
 	private String password;
-	private List<Utente> followers;
-	private List<Utente> followed;
-	private List<Tweet> tweets;
+	private List<Utente> followers = new ArrayList<Utente>();
+	private List<Utente> followed = new ArrayList<Utente>();
+	private List<Tweet> tweets = new ArrayList<Tweet>();
 	
 	public Utente(String nome, String cognome, String nickname, String email, String password) {
 		this.nome = nome;
 		this.cognome = cognome;
+		this.nickname = nickname;
 		setEmail(email);
 		this.password = password;
 	}

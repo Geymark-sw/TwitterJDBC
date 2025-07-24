@@ -3,6 +3,7 @@ package utils;
 import java.util.*;
 
 import dao.Dao;
+import models.Tweet;
 import models.Utente;
 
 public class FunzioniUtils {
@@ -137,11 +138,14 @@ public class FunzioniUtils {
     
     
     public static void stampaUtenti(List<Utente> utenti) {
-        System.out.printf("%-15s %-15s %-15s%n", "Nome", "Cognome", "Nickname");
-        System.out.println("--------------------------------------------------");
+    	int index = 0;
+    	System.out.printf("%-5s %-15s %-15s %-15s%n", "  ", "Nome", "Cognome", "Nickname");
+        System.out.println("-----------------------------------------------------------");
 
         for (Utente u : utenti) {
-            System.out.printf("%-15s %-15s %-15s%n",
+        	index++;
+            System.out.printf("%-5d %-15s %-15s %-15s%n",
+                index,
                 u.getNome(),
                 u.getCognome(),
                 u.getNickname());
@@ -179,6 +183,22 @@ public class FunzioniUtils {
     	
     	return utentiAccorpati;
     	
+    }
+    
+    public static void stampaUtente(Utente u) {
+    	int indexTweet = 0;
+    	System.out.println("Nome: " + u.getNome() + "\n"
+    					+ "Cognome: " + u.getCognome() + "\n"
+    					+ "Nickname: " + u.getNickname());
+    	System.out.printf("%-15s %-15s%n", "Follower", "Seguiti");
+    	System.out.printf("%-15s %-15s%n", u.getFollowers().size(), u.getFollowed().size());
+    	
+    	System.out.println("Tweets:");
+    	System.out.printf("%-5s %-20s %-22s %-22s %-22s %-15s%n", "  ", "Utente", "Titolo", "Descrizione", "Caricamento", "Likes");
+    	System.out.println("-----------------------------------------------------------------------------------------------------------------");
+    	for(Tweet t : u.getTweets()) {
+    		System.out.printf("%-5s %-22s %-22s %-22s %-15s%n", indexTweet++, t.getUtente().getNickname(), t.getTitolo(), t.getDescrizione(), t.getIstanteCaricamento(), t.getLikes().size());
+    	}
     }
     
 }

@@ -13,6 +13,8 @@ public class Main {
 	private static Scanner input = new Scanner(System.in);
 	private static Dao dao = new Dao();
 	private static Utente utente = null;
+	private static int indexUtente; //variabile per accedere ad una lista di utenti
+	private static Utente ricercato = null; //variabile per contenere un utente che viene ricercato
 	
 	public static void main(String [] args) {
 		
@@ -57,7 +59,7 @@ public class Main {
 							+ "2. Mostra profilo\n"
 							+ "3. Mostra feed\n"
 							+ "4. Metti Like\n"
-							+ "5. Rimuovi Like"
+							+ "5. Rimuovi Like\n"
 							+ "0. Esci da Twitter");
 			try {
 				scelta = Integer.parseInt(input.nextLine());
@@ -90,6 +92,25 @@ public class Main {
 				//Vuoi mettere Like?
 				//se no torna menu principale
 			
+			visualizzaProfiloUtente(utentiAccorpati);
+			
+			System.out.println("Se vuoi mettere like a qualche tweet inserisci il numero del tweet altrimenti digita 0");
+			int indexTweet = - 1;
+			do {
+				try {
+					indexTweet = Integer.parseInt(input.nextLine());
+				}catch (NumberFormatException e) {
+					System.out.println("Valore non valido");
+					indexUtente = -1;
+				} 
+			}while(indexTweet < 0 || indexTweet > ricercato.getTweets().size());
+			if(indexTweet == 0) {
+				break;
+			}
+			if(!ricercato.getTweets().get(indexTweet-1).getLikes().contains(utente)) {
+				ricercato.getTweets().get(indexTweet-1).getLikes().add(utente);
+			}
+			
 			
 			break;
 		case 2:
@@ -111,6 +132,23 @@ public class Main {
 		
 	}
 
+	private static void visualizzaProfiloUtente(List<Utente> utenti) {
+		
+		System.out.println("Se vuoi visualizzare il profilo di un utente specifico digita il numero accanto all'utente");
+		indexUtente = -1;
+		do {
+			try {
+				indexUtente = Integer.parseInt(input.nextLine());
+			} catch (NumberFormatException e) {
+				System.out.println("Valore non valido");
+				indexUtente = -1;
+			} 
+		} while (indexUtente < utenti.size() || indexUtente > utenti.size());
+		ricercato = utenti.get(indexUtente-1);
+		FunzioniUtils.stampaUtente(ricercato);
+		
+	}
+
 	private static void registrati() {
 		System.out.println("Inserisci il nome: ");
 		String nome = input.nextLine().replaceAll("\\s+", "");//Rimuove tutti gli spazi contenuti nella string
@@ -127,7 +165,7 @@ public class Main {
 		System.out.println("Inserisci l'email: ");
 		String email = input.nextLine().replaceAll("\\s+", "").toLowerCase();
 		while(!email.matches("^[\\w.-]+@[\\w.-]+\\.[a-zA-Z]{2,}$") || FunzioniUtils.emailExists(email)){ //email già esitente) 
-			System.out.println("Email non validao già esistente, inseriscine una valida\nemail: ");
+			System.out.println("Email non valido già esistente, inseriscine una valida\nemail: ");
 			email = input.nextLine();
 		}
 		
@@ -136,9 +174,9 @@ public class Main {
 		String password = input.nextLine();
 		
 		utente = new Utente(nome, cognome, nickname, email, password);
+		dao.inserisciUtente(utente);
 		System.out.println("Registrazione completata con successo!\n"
-				+ "Benvenuto in Twitter" + utente.getNome());
-		
+				+ "Benvenuto in Twitter " + utente.getNome());
 		
 	}
 

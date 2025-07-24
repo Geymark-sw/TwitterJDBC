@@ -1,6 +1,7 @@
 package models;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Tweet {
@@ -9,7 +10,7 @@ public class Tweet {
 	private String titolo;
 	private String descrizione;
 	private LocalDateTime istanteCaricamento;
-	private List<Utente> likes;
+	private List<Utente> likes = new ArrayList<Utente>();
 	
 	
 	public Tweet(Utente utente, String descrizione) {

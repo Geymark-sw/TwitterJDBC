@@ -32,6 +32,7 @@ public class Dao {
 			stmt.setString(3, utente.getNickname());
 			stmt.setString(4, utente.getEmail());
 			stmt.setString(5, utente.getPassword());
+			stmt.toString();
 			stmt.executeUpdate();
 			return true;
 			
@@ -47,24 +48,23 @@ public class Dao {
 		//Inizialmente recupero l'utente senza seguiti e follower
 		String query = "SELECT * "
 					+ "FROM utente "
-					+ "WHERE nickname = ?";
+					+ "WHERE nickname = ? OR email = ?";
 
 		try(Connection conn = DBConnection.getConnection();
 		PreparedStatement stmt = conn.prepareStatement(query);){
 			stmt.setString(1, nicknameOrEmail);
+			stmt.setString(2, nicknameOrEmail);
 			ResultSet rs = stmt.executeQuery();
-			
-			String nome = rs.getString("nome");
-			String cognome = rs.getString("cognome");
-			String nicknameRS = rs.getString("nickname");
-			String email = rs.getString("email");
-			String password = rs.getString("password");
-			
 			if(rs.next()) {
+				String nome = rs.getString("nome");
+				String cognome = rs.getString("cognome");
+				String nicknameRS = rs.getString("nickname");
+				String email = rs.getString("email");
+				String password = rs.getString("password");
 				utente = new Utente(nome, cognome, nicknameRS, email, password);
-			}else {
-				cercaUtentePerEmail(nicknameOrEmail);
-			}
+			} /*
+				 * else { cercaUtentePerEmail(nicknameOrEmail); }
+				 */
 			
 		}catch(SQLException e) {
 			e.printStackTrace();
@@ -72,7 +72,7 @@ public class Dao {
 		
 		//Recupero i seguiti del follower
 		String querySeguiti = "SELECT * "
-				+ "FROM utenti u JOIN follow f "
+				+ "FROM utente u JOIN follows f "
 				+ "ON u.id_utente = f.id_followed "
 				+ "WHERE u.nickname = ?";
 		
@@ -93,7 +93,7 @@ public class Dao {
 		//Recupero i follower
 		String queryFollower = "SELECT * "
 							+ "FROM utente u JOIN follows f "
-							+ "ON u.id_utente = f.id_followers "
+							+ "ON u.id_utente = f.id_follower "
 							+ "WHERE u.nickname = ?";
 		
 		try(Connection conn = DBConnection.getConnection();
@@ -118,20 +118,19 @@ public class Dao {
 		//Inizialmente recupero l'utente senza seguiti e follower
 		String query = "SELECT * "
 					+ "FROM utente "
-					+ "WHERE nickname = ?";
+					+ "WHERE email = ?";
 
 		try(Connection conn = DBConnection.getConnection();
 		PreparedStatement stmt = conn.prepareStatement(query);){
 			stmt.setString(1, nicknameOrEmail);
 			ResultSet rs = stmt.executeQuery();
 			
-			String nome = rs.getString("nome");
-			String cognome = rs.getString("cognome");
-			String nicknameRS = rs.getString("nickname");
-			String email = rs.getString("email");
-			String password = rs.getString("password");
-			
 			if(rs.next()) {
+				String nome = rs.getString("nome");
+				String cognome = rs.getString("cognome");
+				String nicknameRS = rs.getString("nickname");
+				String email = rs.getString("email");
+				String password = rs.getString("password");
 				utente = new Utente(nome, cognome, nicknameRS, email, password);
 			}else {
 				return null;
@@ -143,9 +142,9 @@ public class Dao {
 		
 		//Recupero i seguiti del follower
 				String querySeguiti = "SELECT * "
-						+ "FROM utenti u JOIN follow f "
+						+ "FROM utenti u JOIN follows f "
 						+ "ON u.id_utente = f.id_followed "
-						+ "WHERE u.nickname = ?";
+						+ "WHERE u.nickname = ? OR u.email = ?;";
 				
 				try(Connection conn = DBConnection.getConnection();
 				PreparedStatement stmt = conn.prepareStatement(querySeguiti);){
@@ -164,7 +163,7 @@ public class Dao {
 				//Recupero i follower
 				String queryFollower = "SELECT * "
 									+ "FROM utente u JOIN follows f "
-									+ "ON u.id_utente = f.id_followers "
+									+ "ON u.id_utente = f.id_follower "
 									+ "WHERE u.nickname = ?";
 				
 				try(Connection conn = DBConnection.getConnection();
