@@ -55,11 +55,11 @@ public class Main {
 		
 		//Menù principale
 		do {
-			System.out.println("1. Cerca una persona\n"
+			System.out.println("1.Cerca una persona\n"
 							+ "2. Mostra profilo\n"
 							+ "3. Mostra feed\n"
-							+ "4. Metti Like\n"
-							+ "5. Rimuovi Like\n"
+								+ "4. Metti Like\n"
+								+ "5. Rimuovi Like\n"
 							+ "0. Esci da Twitter");
 			try {
 				scelta = Integer.parseInt(input.nextLine());
@@ -221,6 +221,27 @@ public class Main {
 		
 		switch(scelta) {
 		
+		case 1:
+			rimuoviTweet();
+			break;
+			
+		case 2:
+			FunzioniUtils.stampaUtenti(utente.getFollowed());
+			//dopo aver mostrato i seguiti chiedo se si vuole smettere di seguire qualcuno
+			String opzione;
+			
+			do {
+				System.out.println("Vuoi smettere di seguire qualcuno? s / n");
+				opzione = input.nextLine();
+				if(!opzione.equalsIgnoreCase("s") || !opzione.equalsIgnoreCase("n")) {
+					System.out.println("Hai inserito un valore non valido.");
+				}
+			}while(!opzione.equalsIgnoreCase("s") || !opzione.equalsIgnoreCase("n"));
+			
+			if(opzione.equalsIgnoreCase("s")) {
+				rimuoviSeguito();
+			}
+			
 		}
 		
 		
@@ -277,5 +298,24 @@ public class Main {
 		}
 		
 	}
+	
+	public static void rimuoviSeguito() {
+		indexUtente = -1;
+    	System.out.println("Inserisci il numero accanto all'utente da smettere di seguire:");
+    	do {
+    		try {
+    			indexUtente = Integer.parseInt(input.nextLine());
+    			if(indexUtente < 1 || indexUtente > utente.getFollowed().size()) {
+    				System.out.println("Hai inserito un valore non valido, riprova");
+    			}
+    		}catch(Exception e) {
+    			System.out.println("Hai inserito un valore non valido, riprova.");
+    		}
+    	}while(indexUtente < 1 || indexUtente > utente.getFollowed().size());
+    	
+    	dao.smettiDiSeguire(utente.getNickname(), utente.getFollowed().get(indexUtente).getNickname());
+    	utente.getFollowed().remove(indexUtente);
+    }
+	
 
 }

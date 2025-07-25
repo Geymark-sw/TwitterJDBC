@@ -74,7 +74,7 @@ public class Dao {
 		//Recupero i seguiti del follower
 		String querySeguiti = "SELECT * "
 				+ "FROM utente u JOIN follows f "
-				+ "ON u.id_utente = f.id_followed "
+				+ "ON u.nickname = f.nickname_followed "
 				+ "WHERE u.nickname = ?";
 		
 		try(Connection conn = DBConnection.getConnection();
@@ -94,7 +94,7 @@ public class Dao {
 		//Recupero i follower
 		String queryFollower = "SELECT * "
 							+ "FROM utente u JOIN follows f "
-							+ "ON u.id_utente = f.id_follower "
+							+ "ON u.nickname = f.nickname_follower "
 							+ "WHERE u.nickname = ?";
 		
 		try(Connection conn = DBConnection.getConnection();
@@ -192,8 +192,8 @@ public class Dao {
 		return false;
 	}
 
-	private Tweet cercaTweet(long idTweet) {
-		String query = "SELECT *"
+	public Tweet cercaTweet(long idTweet) {
+		String query = "SELECT * "
 					+ "FROM tweet t "
 					+ "WHERE t.id_tweet = ?";
 		
@@ -212,5 +212,48 @@ public class Dao {
 		}
 		return null;
 	}
+	
+	
+	public boolean smettiDiSeguire(String nicknameSeguace, String nicknameSeguito) {
+        if (nicknameSeguace.equalsIgnoreCase(nicknameSeguito)) {
+              System.out.println("Non puoi smettere di seguire te stesso.");
+              return false;
+          }
+        String sql = "DELETE FROM follows WHERE nickname_follower = ? AND nickname_followed = ?";
+        try (Connection conn = DBConnection.getConnection();
+              PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+          stmt.setString(1, nicknameSeguace);
+          stmt.setString(2, nicknameSeguito);
+          return stmt.executeUpdate() > 0;
+
+        } catch (SQLException e) {
+          System.err.println("Errore unfollow: " + e.getMessage());
+          return false;
+        }
+	}
+      
+      
+      public boolean segui(String nicknameSeguace, String nicknameSeguito) {
+          if (nicknameSeguace.equalsIgnoreCase(nicknameSeguito)) {
+                System.out.println("Non puoi di seguire te stesso.");
+                return false;
+            }
+        String sql = "INSERT FROM follows(nickname_follower, nickname_followed) "
+        		+ "VALUES(?, ?)";
+        try (Connection conn = DBConnection.getConnection();
+                PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, nicknameSeguace);
+            stmt.setString(2, nicknameSeguito);
+            return stmt.executeUpdate() > 0;
+
+        } catch (SQLException e) {
+            System.err.println("Errore follow: " + e.getMessage());
+            return false;
+        }
+
+  }
+	
 }
 	

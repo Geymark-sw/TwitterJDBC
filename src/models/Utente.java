@@ -89,6 +89,8 @@ public class Utente {
 	public void setTweets(List<Tweet> tweets) {
 		this.tweets = tweets;
 	}
+
+	
 	
 	
 	

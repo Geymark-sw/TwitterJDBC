@@ -211,9 +211,7 @@ public class FunzioniUtils {
     	}
     }
     
-    public static void rimuoviTweet(Utente u, Tweet t) {
-    	
-    }
+    
     
 }
 
