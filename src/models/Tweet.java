@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Tweet {
-	
+	private int idTweet;
 	private Utente utente;
 	private String titolo;
 	private String descrizione;
@@ -13,9 +13,10 @@ public class Tweet {
 	private List<Utente> likes = new ArrayList<Utente>();
 	
 	
-	public Tweet(Utente utente, String descrizione) {
+	public Tweet(Utente utente, String titolo, String descrizione) {
 		super();
 		this.utente = utente;
+		this.titolo = titolo;
 		this.descrizione = descrizione;
 	}
 
@@ -72,6 +73,16 @@ public class Tweet {
 
 	public void setUtente(Utente utente) {
 		this.utente = utente;
+	}
+
+
+	public int getIdTweet() {
+		return idTweet;
+	}
+
+
+	public void setIdTweet(int idTweet) {
+		this.idTweet = idTweet;
 	}
 	
 	

@@ -201,5 +201,19 @@ public class FunzioniUtils {
     	}
     }
     
+    
+    public static void stampaTweets(List<Tweet> tweets) {
+    	int indexTweet = 0;
+    	System.out.printf("%-5s %-20s %-22s %-22s %-22s %-15s%n", "  ", "Utente", "Titolo", "Descrizione", "Caricamento", "Likes");
+    	System.out.println("-----------------------------------------------------------------------------------------------------------------");
+    	for(Tweet t : tweets) {
+    		System.out.printf("%-5s %-22s %-22s %-22s %-15s%n", indexTweet++, t.getUtente().getNickname(), t.getTitolo(), t.getDescrizione(), t.getIstanteCaricamento(), t.getLikes().size());
+    	}
+    }
+    
+    public static void rimuoviTweet(Utente u, Tweet t) {
+    	
+    }
+    
 }
 

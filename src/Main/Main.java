@@ -122,12 +122,61 @@ public class Main {
 				//Sotto menu in profilo utente
 					//Visualizza follower
 					//Visualizza seguiti
+					//Elimina post
 					//Torna al menu principale
 						//Vuoi visualizzare un profilo specifico
 						//riprendi da riga 88
-						
 			
+			FunzioniUtils.stampaUtente(utente);
+			
+			sottoMenuProfiloUtente();
+			
+			System.out.println("Vuoi rimovere qulche tweet dal profilo? 1. Si'\n2. No");
+			do {
+				try {
+					scelta = Integer.parseInt(input.nextLine());
+					if(scelta < 1 || scelta > 2) {
+						System.out.println("Hai inserito un valore non valido");
+					}
+				}catch(Exception e) {
+					System.out.println("Hai inserito un valore non valido");
+					scelta = -1;
+				}
+				
+				if(scelta == 2)
+					break;
+				
+			}while(scelta < 1 || scelta > 2);
+			
+			if(scelta == 1) {
+				rimuoviTweet();
+			}
 			break;
+		}
+		
+	}
+
+	private static void rimuoviTweet() {
+		System.out.println("Inserisci il numero accanto al tweet da eliminare: ");
+		int indexTweet = -1;
+		do {
+			
+			try {
+				indexTweet = Integer.parseInt(input.nextLine());
+				if(indexTweet < 0 && indexTweet > utente.getTweets().size()) {
+					System.out.println("Hai inserito un valore non valido");
+				}
+			}catch(Exception e) {
+				System.out.println("Hai inserito un valore non valido");
+				indexTweet = -1;
+			}
+		}while(indexTweet < 0 && indexTweet > utente.getTweets().size());
+	//Se l'utente è il proprietario del tweet
+		if(utente.getNickname().equalsIgnoreCase(utente.getTweets().get(indexTweet).getUtente().getNickname())) {
+			dao.rimuoviTweet(utente.getTweets().get(indexTweet).getIdTweet());
+			utente.getTweets().remove(indexTweet);
+			System.out.println("Tweet rimosso con successo!");
+
 		}
 		
 	}
@@ -146,6 +195,35 @@ public class Main {
 		} while (indexUtente < utenti.size() || indexUtente > utenti.size());
 		ricercato = utenti.get(indexUtente-1);
 		FunzioniUtils.stampaUtente(ricercato);
+		
+	}
+
+	private static void sottoMenuProfiloUtente() {
+		
+		int scelta = -1;
+		
+		do {
+			System.out.println("Opzioni disponibili:\n"
+					+ "1. Rimuovi tweet"
+					+ "2. Visulizza seguiti"
+					+ "3. Visualizza follower");
+			try {
+				scelta = Integer.parseInt(input.nextLine());
+				if(scelta < 0 || scelta > 5) {
+					System.out.println("Hai inserito un valore non valido, riprova.");
+				}
+			} catch (NumberFormatException e) {
+				System.out.println("Hai inserito un valore non valido, riprova.");
+			}
+			
+		}while(scelta < 0 || scelta > 3);
+		
+		
+		switch(scelta) {
+		
+		}
+		
+		
 		
 	}
 
@@ -188,8 +266,8 @@ public class Main {
 		System.out.println("Inserisci la password: ");
 		String password = input.nextLine();
 		
-		if (dao.cercaUtentePerNickname(user) != null) {
-			utente = dao.cercaUtentePerNickname(user);
+		if (dao.cercaUtentePerNicknameEmailId(user) != null) {
+			utente = dao.cercaUtentePerNicknameEmailId(user);
 			if(!utente.getPassword().equals(password)) {
 				utente = null;
 				System.out.println("Errore, le credenziali sono errate");
